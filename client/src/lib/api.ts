@@ -7,7 +7,7 @@
  */
 
 export const API_BASE_URL =
-  import.meta.env.VITE_API_URL ?? "https://api.your-payroll-domain.com";
+  import.meta.env.VITE_API_URL ?? "http://localhost:5000";
 
 export async function apiRequest<T>(
   path: string,
@@ -31,33 +31,39 @@ export async function apiRequest<T>(
 export const api = {
   auth: {
     companySignup: (payload: unknown) =>
-      apiRequest("/api/auth/company/signup", {
+      apiRequest("/api/v1/auth/company/signup", {
         method: "POST",
         body: JSON.stringify(payload),
       }),
 
     employeeSignup: (payload: unknown) =>
-      apiRequest("/api/auth/employee/signup", {
+      apiRequest("/api/v1/auth/employee/signup", {
         method: "POST",
         body: JSON.stringify(payload),
       }),
 
-    login: (payload: unknown) =>
-      apiRequest("/api/auth/login", {
+    companylogin: (payload: unknown) =>
+      apiRequest("/api/v1/auth/company/login", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      }),
+
+    employeelogin: (payload: unknown) =>
+      apiRequest("/api/v1/auth/employee/login", {
         method: "POST",
         body: JSON.stringify(payload),
       }),
   },
 
   company: {
-    dashboard: () => apiRequest("/api/company/dashboard"),
-    employees: () => apiRequest("/api/company/employees"),
-    payroll: () => apiRequest("/api/company/payroll"),
+    dashboard: () => apiRequest("/api/v1/company/dashboard"),
+    employees: () => apiRequest("/api/v1/company/employees"),
+    payroll: () => apiRequest("/api/v1/company/payroll"),
   },
 
   employee: {
-    dashboard: () => apiRequest("/api/employee/dashboard"),
-    profile: () => apiRequest("/api/employee/profile"),
-    payouts: () => apiRequest("/api/employee/payouts"),
+    dashboard: () => apiRequest("/api/v1/employee/dashboard"),
+    profile: () => apiRequest("/api/v1/employee/profile"),
+    payouts: () => apiRequest("/api/v1/employee/payouts"),
   },
 };

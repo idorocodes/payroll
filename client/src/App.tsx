@@ -25,6 +25,8 @@ import {
   X,
   Zap,
 } from "lucide-react";
+import EmployeeLogin from "./pages/EmployeeLogin";
+import EmployerLogin from "./pages/EmployerLogin";
 
 const workers = [
   {
@@ -89,7 +91,6 @@ function LandingPage() {
           </div>
 
           <div className="hidden items-center gap-5 md:flex">
-         
             <a
               href="/signup/company"
               className="group flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[13px] font-medium text-black transition hover:bg-zinc-200"
@@ -229,9 +230,9 @@ function LandingPage() {
               </h2>
 
               <p className="max-w-md text-sm leading-7 text-zinc-500">
-                Your finance team sees one Payroll. Your employees see freedom. The
-                platform handles the routing, records the transaction and keeps
-                everyone on the same page.
+                Your finance team sees one Payroll. Your employees see freedom.
+                The platform handles the routing, records the transaction and
+                keeps everyone on the same page.
               </p>
             </div>
 
@@ -428,9 +429,9 @@ function LandingPage() {
                     infrastructure.
                   </h2>
                   <p className="mt-6 max-w-md text-sm leading-7 text-zinc-500">
-                    Build Payroll into your product instead of stitching together
-                    wallets, bank rails, approvals and transaction records
-                    yourself.
+                    Build Payroll into your product instead of stitching
+                    together wallets, bank rails, approvals and transaction
+                    records yourself.
                   </p>
                   <div className="mt-8 flex items-center gap-2 text-[11px] text-zinc-400">
                     <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
@@ -460,8 +461,8 @@ function LandingPage() {
                 <span className="text-zinc-600">the old way.</span>
               </h2>
               <p className="mx-auto mt-7 max-w-xl text-sm leading-7 text-zinc-500">
-                Bring your company, employees and treasury into one modern Payroll
-                system designed for a world without borders.
+                Bring your company, employees and treasury into one modern
+                Payroll system designed for a world without borders.
               </p>
 
               <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -599,8 +600,6 @@ function Stat({ value, label }: { value: string; label: string }) {
     </div>
   );
 }
-
-
 
 function PayrollDashboard() {
   return (
@@ -1101,16 +1100,16 @@ await Payroll.approve();`}</code>
   );
 }
 
-
-
-
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>-
+      <Routes>
+        -
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup/company" element={<CompanySignup />} />
         <Route path="/signup/employee" element={<EmployeeSignup />} />
+        <Route path="/login/employee" element={<EmployeeLogin />} />
+        <Route path="/login/employer" element={<EmployerLogin />} />
         <Route path="/company" element={<CompanyDashboard />} />
         <Route path="/employee" element={<EmployeeDashboard />} />
         <Route path="*" element={<NotFound />} />
@@ -1118,3 +1117,4 @@ export default function App() {
     </BrowserRouter>
   );
 }
+     

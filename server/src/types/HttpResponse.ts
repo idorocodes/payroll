@@ -1,21 +1,16 @@
-import type { Response, Request } from "express";
+import type { Request, Response } from "express";
 
-export type HttpResponse = {
+export interface HttpResponse<T = any> {
   statusCode: number;
-  message: string;
   success: boolean;
-};
+  message: string;
+  data?: T;
+}
 
-export const sendResponse = (
+export function sendResponse<T>(
   req: Request,
   res: Response,
-  response: HttpResponse,
-) => {
-  const { statusCode, message, success } = response;
-
-  return res.status(statusCode).json({
-    statusCode,
-    success,
-    message,
-  });
-};
+  payload: HttpResponse<T>
+) {
+  return res.status(payload.statusCode).json(payload);
+}
