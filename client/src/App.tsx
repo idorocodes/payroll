@@ -64,8 +64,7 @@ const navItems = [
 
 function LandingPage() {
   const [open, setOpen] = useState(false);
-  const [billing, setBilling] = useState<"monthly" | "annual">("monthly");
-
+  
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#030405] text-white selection:bg-cyan-300 selection:text-black">
       <AmbientBackground />
