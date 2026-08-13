@@ -10,6 +10,8 @@ import {
   Wallet,
   Zap,
 } from "lucide-react";
+import { api } from "../lib/api";
+import type { HttpResponse } from "../types/HttpResponse";
 // import { api } from "../lib/api";
 
 export default function EmployeeLogin() {
@@ -53,13 +55,16 @@ export default function EmployeeLogin() {
         password,
       });
 
-    //    const data  = await api.auth.employeelogin({email,password});
+      const data: HttpResponse = (await api.auth.employeelogin({
+        email,
+        password,
+      })) as HttpResponse;
 
+      if (!data.success) {
+        alert("Error" + data.message);
+      }
 
-    //    if (!data.success:Boolean){
-
-    //    }
-   
+      
     } finally {
       setLoading(false);
     }

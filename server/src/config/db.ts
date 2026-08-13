@@ -1,11 +1,19 @@
-import { PrismaClient } from "@prisma/client";
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
+import * as schema from '../db/schema.js';
+import * as relations from '../db/relations.js';
 
-declare global {
-  var prisma: PrismaClient | undefined;
+// Verify env variable loading
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error('DATABASE_URL is missing in environment variables!');
 }
 
-export const db = global.prisma || new PrismaClient();
+console.log('Connecting to Neon URL host:', connectionString.split('@')[1] || 'URL malformed');
 
-if (process.env.NODE_ENV !== "production") {
-  global.prisma = db;
-}
+const sql = neon(connectionString);
+
+export const db = drizzle(sql, { 
+  schema: { ...schema, ...relations } 
+});

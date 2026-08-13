@@ -53,7 +53,7 @@ export default function EmployerLogin() {
       });
 
       const formData = {email, password};
-      await api.auth.employeelogin(formData);
+      await api.auth.companylogin(formData);
     } finally {
       setLoading(false);
     }

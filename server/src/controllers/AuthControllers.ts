@@ -2,13 +2,14 @@ import { HttpResponse, sendResponse } from "../types/HttpResponse";
 import type { Request, Response } from "express";
 import { checkValidEmail } from "../utils/valueChecker";
 import { db } from "../config/db";
+import { users } from "../db/schema";
+import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
 import { generateEmployeeToken } from "../utils/jwt";
 
-export let EmployeeLogin = async (req: Request, res: Response) => {
+export const EmployeeLogin = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-
 
     if (!email || !password) {
       const response: HttpResponse = {
@@ -19,7 +20,6 @@ export let EmployeeLogin = async (req: Request, res: Response) => {
       return sendResponse(req, res, response); 
     }
 
-    
     if (!checkValidEmail(email)) {
       const response: HttpResponse = {
         statusCode: 400,
@@ -29,17 +29,18 @@ export let EmployeeLogin = async (req: Request, res: Response) => {
       return sendResponse(req, res, response); 
     }
 
-
-    const user = await db.user.findUnique({
-      where: { email },
-      include: {
+  
+    const user = await db.query.users.findFirst({
+      where: eq(users.email, email),
+      with: {
         memberships: {
-          include: { company: true },
+          with: {
+            company: true,
+          },
         },
       },
     });
 
- 
     if (!user) {
       const response: HttpResponse = {
         statusCode: 401,
@@ -49,7 +50,7 @@ export let EmployeeLogin = async (req: Request, res: Response) => {
       return sendResponse(req, res, response); 
     }
 
-
+   
     const validPassword = await bcrypt.compare(password, user.passwordHash);
     if (!validPassword) {
       const response: HttpResponse = {
@@ -57,13 +58,12 @@ export let EmployeeLogin = async (req: Request, res: Response) => {
         message: "Invalid Credentials",
         success: false,
       };
-      return sendResponse(req, res, response); // 👈 Added return
+      return sendResponse(req, res, response);
     }
 
-   
+    // 3. Generate token
     const token = generateEmployeeToken(user);
 
-   
     const response: HttpResponse = {
       statusCode: 200,
       message: "Employee logged in successfully",
@@ -82,10 +82,11 @@ export let EmployeeLogin = async (req: Request, res: Response) => {
 
     return sendResponse(req, res, response);
   } catch (error) {
+    console.error(error);
     const response: HttpResponse = {
       statusCode: 500,
       success: false,
-      message: String(error),
+      message: error instanceof Error ? error.message : String(error),
     };
 
     return sendResponse(req, res, response);
